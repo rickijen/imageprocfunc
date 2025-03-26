@@ -1,0 +1,9 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "XXX",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "saimageproc2025_AIVISION": "YYY",
+    "saimageproc2025_STORAGE": "XXX"
+  }
+}
