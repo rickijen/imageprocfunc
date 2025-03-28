@@ -7,5 +7,5 @@ This is an Azure Function App triggered by Blob storage events from images uploa
 5. Now that the OCR output JSON is persisted in Cosmos DB, we will be able to query with SQL syntax, e.g.: SELECT * FROM c WHERE c.createdDateTime = "2025-03-28T21:58:14Z"
 
 <p align="center">
-<img title="" src="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/idea/_images/architecture-intelligent-apps-image-processing.png?raw=true" alt="main-pic" data-align="center">
+<img title="" src="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/idea/_images/architecture-intelligent-apps-image-processing.png?raw=true" alt="main-pic" width="650" data-align="center">
 </p>
