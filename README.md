@@ -1,5 +1,5 @@
 <p align="center">
-<img title="" src="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/idea/_images/architecture-intelligent-apps-image-processing.png?raw=true" alt="main-pic" width="350" data-align="center">
+<img title="" src="https://learn.microsoft.com/en-us/azure/architecture/ai-ml/idea/_images/architecture-intelligent-apps-image-processing.png?raw=true" alt="main-pic" data-align="center">
 </p>
 This is an Azure Function App triggered by Blob storage events from images uploaded into a container:
 1. Once the Function is triggred, it will send the image URL as JSON payload to AI Vision backend for OCR. The AI VISION is running on Azure container instance.
