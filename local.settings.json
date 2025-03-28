@@ -1,9 +1,18 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "XXX",
+    "AzureWebJobsStorage": "XXXX",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "saimageproc2025_AIVISION": "YYY",
-    "saimageproc2025_STORAGE": "XXX"
+    "saimageproc2025_AIVISION": "XXXX",
+    "saimageproc2025_STORAGE": "XXXX",
+    "FUNCTIONS_EXTENSION_VERSION": "~4",
+    "WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED": "1",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "XXXX",
+    "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "XXXX",
+    "WEBSITE_CONTENTSHARE": "imgproca9f0",
+    "WEBSITE_RUN_FROM_PACKAGE": "1",
+    "CosmosDb": "ocr",
+    "CosmosContainer": "ai_vision_output",
+    "CosmosDBConnectionString": "XXXX"
   }
 }
