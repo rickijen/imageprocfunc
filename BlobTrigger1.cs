@@ -16,7 +16,7 @@ namespace Company.Function
 
     }
 
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+    // Below is the C# class converted from JSON object: https://json2csharp.com/
 
     public class AnalyzeResult
     {
@@ -50,6 +50,7 @@ namespace Company.Function
 
     public class Root
     {
+        public string id {get; set;}
         public string status { get; set; }
         public DateTime createdDateTime { get; set; }
         public DateTime lastUpdatedDateTime { get; set; }
@@ -68,6 +69,8 @@ namespace Company.Function
         public string text { get; set; }
         public double confidence { get; set; }
     }
+    // end of JSON C# class
+
 
     public class BlobTrigger1
     {
@@ -117,21 +120,28 @@ namespace Company.Function
             // Create an object
             var payload = new Payload() { url = sasURI.AbsoluteUri};
 
+            // HTTP POST the payload to AI VISION container endpoint
             var response = await client.PostAsJsonAsync(client.BaseAddress, payload);
 
+            // If response header has the Operation-Location, it's successfully processed by AI VISION OCR
             if (response.Headers.Contains("Operation-Location"))
             {
                 var operationlocation = response.Headers.GetValues("Operation-Location").First();
 
                 _logger.LogInformation($"C# Blob trigger function Processed image\n Name: {sasURI}\n To: {targetUrl}\n Response: {operationlocation}");
 
-                // Delay 5 secs to allow backend processing
+                // Delay 5 secs to allow backend processing, better to make this configurable.
                 await Task.Delay(5000);
 
+                // Retreive the JSON output from OCR and store in the "Root" class defined above
                 client_result.BaseAddress = new Uri(operationlocation);
 
                 Root? json_root = await client.GetFromJsonAsync<Root>(client_result.BaseAddress);
 
+                // Generate a new ID for the new item to be created in Cosmos DB container
+                json_root.id = Guid.NewGuid().ToString();
+
+                // Instantiate the CosmosClient and reference the container
                 CosmosClient cosmosClient = new CosmosClient(
                             Environment.GetEnvironmentVariable("CosmosDBConnectionString"), 
                             new CosmosClientOptions()
@@ -141,9 +151,14 @@ namespace Company.Function
 
                 var CosmosDb = Environment.GetEnvironmentVariable("CosmosDb");
                 var CosmosContainer = Environment.GetEnvironmentVariable("CosmosContainer");
-                //var container = cosmosClient.GetContainer(Environment.GetEnvironmentVariable("CosmosDb"), Environment.GetEnvironmentVariable("CosmosContainer"));
                 var container = cosmosClient.GetContainer(CosmosDb, CosmosContainer);
-                var cosmosresponse = await container.UpsertItemAsync(json_root);
+
+                // Create the JSON item in Cosmos DB container
+                ItemResponse<Root> response2 = await container.CreateItemAsync<Root>(json_root);
+                if (response.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation($"C# Blob trigger function created item in Cosmos DB\n Name: {CosmosDb}\n Container: {CosmosContainer}");
+                }
             }
         }
     }
