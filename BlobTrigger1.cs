@@ -82,7 +82,7 @@ namespace Company.Function
         }
 
         [Function(nameof(BlobTrigger1))]
-        public async Task Run([BlobTrigger("images/{name}", Connection = "saimageproc2025_STORAGE")] Stream stream, string name)
+        public async Task Run([BlobTrigger("golioth/{name}", Connection = "saimageproc2025_STORAGE")] Stream stream, string name)
         {
             using var blobStreamReader = new StreamReader(stream);
             var content = await blobStreamReader.ReadToEndAsync();
@@ -91,7 +91,7 @@ namespace Company.Function
             BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
 
             // Get a BlobContainerClient for the container
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("images");
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("golioth");
 
             // Get a BlobClient for the blob
             BlobClient blobClient = containerClient.GetBlobClient(name);
